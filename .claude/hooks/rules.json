@@ -1,0 +1,9 @@
+{
+  "languages": {
+    "dart": {
+      "extensions": [".dart"],
+      "lint": "dart format \"{file}\" && flutter analyze \"{file}\"",
+      "test": "flutter test"
+    }
+  }
+}
