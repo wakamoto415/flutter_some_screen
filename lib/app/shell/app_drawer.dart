@@ -40,6 +40,14 @@ class AppDrawer extends ConsumerWidget {
               },
             ),
             ListTile(
+              leading: const Icon(Icons.people),
+              title: const Text('ユーザー一覧'),
+              onTap: () {
+                Navigator.of(context).pop();
+                context.go('/users');
+              },
+            ),
+            ListTile(
               leading: const Icon(Icons.settings),
               title: const Text('設定'),
               onTap: () {
