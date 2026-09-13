@@ -7,36 +7,36 @@ import 'app_drawer.dart';
 import 'floating_bottom_nav_bar.dart';
 
 class MainShell extends ConsumerWidget {
-  const MainShell({super.key, required this.child});
+  const MainShell({super.key, required this.navigationShell});
 
-  final Widget child;
+  final StatefulNavigationShell navigationShell;
 
-  static const _tabPaths = ['/dashboard', '/list'];
-  static const _tabTitles = ['トップ', '一覧'];
-
-  int _indexForLocation(String location) {
-    final index = _tabPaths.indexWhere(location.startsWith);
-    return index == -1 ? 0 : index;
-  }
+  static const _tabTitles = ['トップ', '一覧', 'ユーザー一覧'];
+  static const _usersTabIndex = 2;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final location = GoRouterState.of(context).matchedLocation;
-    final selectedIndex = _indexForLocation(location);
+    final selectedIndex = navigationShell.currentIndex;
     final showBottomNav = ref.watch(bottomNavVisibilityProvider);
+    final isUsersTab = selectedIndex == _usersTabIndex;
 
     return Scaffold(
-      appBar: AppBar(title: Text(_tabTitles[selectedIndex])),
+      appBar: isUsersTab
+          ? null
+          : AppBar(title: Text(_tabTitles[selectedIndex])),
       drawer: const AppDrawer(),
       body: Stack(
         children: [
-          Positioned.fill(child: child),
+          Positioned.fill(child: navigationShell),
           if (showBottomNav)
             Align(
               alignment: Alignment.bottomCenter,
               child: FloatingBottomNavBar(
                 selectedIndex: selectedIndex,
-                onSelect: (index) => context.go(_tabPaths[index]),
+                onSelect: (index) => navigationShell.goBranch(
+                  index,
+                  initialLocation: index == selectedIndex,
+                ),
               ),
             ),
         ],

@@ -17,6 +17,7 @@ class FloatingBottomNavBar extends StatelessWidget {
       label: 'トップ',
     ),
     (icon: Icons.list_alt_outlined, selectedIcon: Icons.list_alt, label: '一覧'),
+    (icon: Icons.people_outline, selectedIcon: Icons.people, label: 'ユーザー一覧'),
   ];
 
   @override

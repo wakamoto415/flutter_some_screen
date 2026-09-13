@@ -7,6 +7,8 @@ import '../../features/list/list_screen.dart';
 import '../../features/login/login_screen.dart';
 import '../../features/settings/settings_screen.dart';
 import '../../features/summary/summary_list_screen.dart';
+import '../../features/users/user_detail_screen.dart';
+import '../../features/users/user_list_screen.dart';
 import '../auth/auth_provider.dart';
 import '../shell/main_shell.dart';
 
@@ -35,16 +37,33 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     },
     routes: [
       GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
-      ShellRoute(
-        builder: (context, state, child) => MainShell(child: child),
-        routes: [
-          GoRoute(
-            path: '/dashboard',
-            builder: (context, state) => const DashboardScreen(),
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) =>
+            MainShell(navigationShell: navigationShell),
+        branches: [
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/dashboard',
+                builder: (context, state) => const DashboardScreen(),
+              ),
+            ],
           ),
-          GoRoute(
-            path: '/list',
-            builder: (context, state) => const ListScreen(),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/list',
+                builder: (context, state) => const ListScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/users',
+                builder: (context, state) => const UserListScreen(),
+              ),
+            ],
           ),
         ],
       ),
@@ -55,6 +74,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/settings',
         builder: (context, state) => const SettingsScreen(),
+      ),
+      GoRoute(
+        path: '/users/:id',
+        builder: (context, state) =>
+            UserDetailScreen(userId: state.pathParameters['id']!),
       ),
     ],
   );
